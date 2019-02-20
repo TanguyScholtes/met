@@ -1,6 +1,6 @@
 import React from "react";
-import "../css/pinStyle.scss";
+import "../scss/pinStyle.scss";
 
 export default props => {
-    return <div className={props.className}>tests</div>;
-}
+    return <span className={props.className + " pin"}> </span>;
+};

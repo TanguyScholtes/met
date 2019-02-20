@@ -1,5 +1,6 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
+import "./scss/appStyle.scss";
 import Pin from "./components/ColorPin";
 
 export default class App extends React.Component {
@@ -7,7 +8,10 @@ export default class App extends React.Component {
         return (
             <div>
                 <h1>Hello World</h1>
-                <Pin />
+                <Pin className="red small" />
+                <Pin className="blue big" />
+                <Pin className="yellow big" />
+                <Pin className="blue big" />
             </div>
         );
     }
