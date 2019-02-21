@@ -45,11 +45,14 @@
   },
   "dependencies": {
     "express": "^4.16.4",
+    "http": "0.0.0",
     "react": "^16.8.1",
     "react-cool-tabs": "^1.1.6",
     "react-dom": "^16.8.1",
     "react-router-dom": "^4.3.1",
-    "react-validation": "^3.0.7"
+    "react-validation": "^3.0.7",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0"
   },
   "husky": {
     "hooks": {
