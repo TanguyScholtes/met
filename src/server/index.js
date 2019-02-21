@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(express.static(path.resolve(__dirname, "../../bin/client")));
 
-app.get("/", (req, res) => {
+app.all("*", (req, res) => {
     res.sendFile(__dirname + "../../client/index.html");
 });
 
@@ -58,6 +58,22 @@ io.sockets.on("connection", socket => {
         ROOMS_LIST[data.name].players[ socket.id ] = SOCKET_LIST[socket.id];
         console.log("join_room", ROOMS_LIST[data.name]);
     });
+
+    socket.on( "get_room", data => {
+        if( ROOMS_LIST[ data.name ] ) {
+            console.log( "get_room", ROOMS_LIST[ data.name ] );
+        } else {
+            console.error( "get_room", `No room with name ${data.name}` );
+        }
+    } );
+
+    socket.on( "get_all_rooms", () => {
+        if( ROOMS_LIST.length >= 0 ) {
+            console.log( "get_all_rooms", ROOMS_LIST );
+        } else {
+            console.error( "get_all_rooms", "No room to display" );
+        }
+    } );
 
     socket.on("disconnect", () => {
         console.log( "disconnect", SOCKET_LIST[socket.id].pseudo );

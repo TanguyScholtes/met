@@ -31,11 +31,21 @@ export default class App extends React.Component {
         this.state.socket.emit( "disconnect" );
     };
 
+    getRoom = () => {
+        this.state.socket.emit( "get_room", { name: 'Hamilton' } );
+    };
+
+    getAllRooms = () => {
+        this.state.socket.emit( "get_all_rooms" );
+    };
+
     render() {
         return (
             <div>
                 <h1>Hello World</h1>
                 <button onClick={() => this.login()}>Login</button>
+                <button onClick={this.getRoom}>get Room</button>
+                <button onClick={this.getAllRooms}>get All Rooms</button>
                 <button onClick={this.send}>Click me</button>
                 <button onClick={this.quit}>Leave co</button>
                 <button onClick={() => this.logout()}>Logout</button>
