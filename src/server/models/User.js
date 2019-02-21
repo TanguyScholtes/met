@@ -5,6 +5,7 @@ class User {
         this.pseudo = string;
         this.score = 0;
         this.hosted = '';
+        this.status = 'http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif';
     }
 }
 
