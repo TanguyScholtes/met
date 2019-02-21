@@ -21,12 +21,24 @@ export default class App extends React.Component {
         this.state.socket.emit("join_room", {name: "Hamilton"});
     };
 
+    login = () => {
+        this.state.socket.emit( "login", {
+            pseudo: "Lyanor"
+        } );
+    };
+
+    logout = () => {
+        this.state.socket.emit( "disconnect" );
+    };
+
     render() {
         return (
             <div>
                 <h1>Hello World</h1>
+                <button onClick={() => this.login()}>Login</button>
                 <button onClick={this.send}>Click me</button>
                 <button onClick={this.quit}>Leave co</button>
+                <button onClick={() => this.logout()}>Logout</button>
             </div>
         );
     }
