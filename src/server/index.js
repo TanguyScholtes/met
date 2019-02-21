@@ -6,6 +6,7 @@ const {APP_PORT} = process.env || 5000;
 let app = express();
 let http = require("http").Server(app);
 let io = require("socket.io")(http);
+let {User} = require( "./models/User.js" );
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -33,11 +34,7 @@ io.sockets.on("connection", socket => {
     }
 
     socket.on("login", data => {
-        let user = {
-            id: socket.id,
-            pseudo: data.pseudo,
-            score: 0
-        };
+        let user = new User( socket.id, data.pseudo );
         SOCKET_LIST[socket.id] = user;
         console.log("login", SOCKET_LIST);
     });
