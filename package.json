@@ -4,6 +4,23 @@
   "description": "A mastermind like game for BeCode",
   "author": "Anarion Lyanor Vlntngrgr",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnarionBe/met.git"
+  },
+  "homepage": "https://github.com/AnarionBe/met",
+  "bugs": {
+    "url": "https://github.com/AnarionBe/met/issues"
+  },
+  "keywords": [
+    "node",
+    "react",
+    "websocket",
+    "sockets.io",
+    "react-dom",
+    "express",
+    "docker"
+  ],
   "scripts": {
     "lint": "npx eslint --fix --cache --ignore-pattern 'docs/*' src",
     "build:server": "npx babel src/server -s --out-dir bin/server",
