@@ -39,6 +39,10 @@ export default class App extends React.Component {
         this.state.socket.emit( "get_all_rooms" );
     };
 
+    generateCombination = () => {
+        this.state.socket.emit( "generate_combination", { number: 2 } );
+    }
+
     render() {
         return (
             <div>
@@ -49,6 +53,7 @@ export default class App extends React.Component {
                 <button onClick={this.send}>Click me</button>
                 <button onClick={this.quit}>Leave co</button>
                 <button onClick={() => this.logout()}>Logout</button>
+                <button onClick={() => this.generateCombination()}>generate combination</button>
             </div>
         );
     }

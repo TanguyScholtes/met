@@ -7,6 +7,11 @@ let app = express();
 let http = require("http").Server(app);
 let io = require("socket.io")(http);
 let {User} = require( "./models/User.js" );
+let {Pin} = require( "./models/Pin.js" );
+
+let rng = function ( min, max ) {
+    return Math.floor( Math.random() * ( max - min + 1 ) + min );
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -23,6 +28,9 @@ http.listen(APP_PORT, () =>
 
 let SOCKET_LIST = [];
 let ROOMS_LIST = [];
+let DIFFICULTY = 1;
+let COMBINATION = [];
+const COLORS = [ 'yellow', 'blue', 'red', 'green', 'white', 'black', 'purple', 'pink' ];
 
 io.sockets.on("connection", socket => {
     socket.id = Math.random();
@@ -79,6 +87,34 @@ io.sockets.on("connection", socket => {
         console.log( "disconnect", SOCKET_LIST[socket.id].pseudo );
         delete SOCKET_LIST[socket.id];
     });
+
+    socket.on( "generate_combination", data => {
+        COMBINATION = [];
+
+        if ( data.number === 2 ) {
+            DIFFICULTY = 2;
+            for( let i = 1; i <= 5; i++ ) {
+                COMBINATION.push( new Pin( COLORS[ rng( 0, 5 ) ] ) );
+            }
+        } else if ( data.number === 3 ) {
+            DIFFICULTY = 3;
+            for( let i = 1; i <= 6; i++ ) {
+                COMBINATION.push( new Pin( COLORS[ rng( 0, 7 ) ] ) );
+            }
+        } else if ( data.number >= 4 ) {
+            DIFFICULTY = 4;
+            for( let i = 1; i <= 6; i++ ) {
+                COMBINATION.push( new Pin( COLORS[ rng( 0, 7 ) ] ) );
+            }
+        } else {
+            DIFFICULTY = 1;
+            for( let i = 1; i <= 4; i++ ) {
+                COMBINATION.push( new Pin( COLORS[ rng( 0, 5 ) ] ) );
+            }
+        }
+
+        console.log( "generate_combination", COMBINATION );
+    } );
 });
 
 /* var express = require('express');
