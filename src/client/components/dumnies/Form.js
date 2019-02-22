@@ -1,10 +1,21 @@
 import React from "react";
 
 export default props => {
-    return (
-        <form onSubmit={props.onSubmit}>
-            <span>tests</span>
-            <input type="submit" />
-        </form>
-    );
+    const generateInputs = () => {
+        const form = [];
+        props.inputs.forEach(elem => {
+            form.push(
+                <input
+                    name={elem.name}
+                    type={elem.type}
+                    key={elem.name}
+                    value={elem.value}
+                    placeholder={elem.placeholder}
+                />,
+            );
+        });
+        return form;
+    };
+
+    return <form onSubmit={props.onSubmit}>{generateInputs()}</form>;
 };
