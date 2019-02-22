@@ -114,6 +114,17 @@ io.sockets.on("connection", socket => {
 
         console.log( "generate_combination", ROOMS_LIST[data.name].combination );
     } );
+
+    socket.on( "update_emoji", data => {
+        if( !data.emoji || !data.room ) {
+            console.error( "update_emoji", "Missing room name and/or emoji" );
+            return;
+        }
+
+        ROOMS_LIST[data.room].players[socket.id].status = data.emoji;
+
+        console.log( "update_emoji", ROOMS_LIST[data.room].players[socket.id] );
+    } );
 });
 
 /* var express = require('express');
