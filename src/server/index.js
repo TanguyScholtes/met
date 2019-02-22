@@ -102,7 +102,7 @@ io.sockets.on("connection", socket => {
                 ROOMS_LIST[data.name].combination.push( new Pin( COLORS[ rng( 0, 7 ) ] ) );
             }
         } else if ( data.number >= 4 ) {
-            MAX_TRIES = 8;
+            ROOMS_LIST[data.name].maxTries = 8;
             for( let i = 1; i <= 6; i++ ) {
                 ROOMS_LIST[data.name].combination.push( new Pin( COLORS[ rng( 0, 7 ) ] ) );
             }
