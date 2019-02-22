@@ -6,8 +6,10 @@ const {APP_PORT} = process.env || 5000;
 let app = express();
 let http = require("http").Server(app);
 let io = require("socket.io")(http);
+
 let {User} = require( "./models/User.js" );
 let {Pin} = require( "./models/Pin.js" );
+let {Room} = require( "./models/Room.js" );
 
 let rng = function ( min, max ) {
     return Math.floor( Math.random() * ( max - min + 1 ) + min );
@@ -28,8 +30,6 @@ http.listen(APP_PORT, () =>
 
 let SOCKET_LIST = [];
 let ROOMS_LIST = [];
-let MAX_TRIES = 10;
-let COMBINATION = [];
 const COLORS = [ 'yellow', 'blue', 'red', 'green', 'white', 'black', 'purple', 'pink' ];
 
 io.sockets.on("connection", socket => {
@@ -49,17 +49,14 @@ io.sockets.on("connection", socket => {
 
     socket.on("create_room", data => {
         if (ROOMS_LIST[data.name]) {
-            console.log("create_room", ROOMS_LIST[data.name]);
+            console.error("create_room", `${ROOMS_LIST[data.name]} already exists`);
+        } else if ( !data.name || typeof data.name != 'string' || data.name === '' ) {
+            console.error( "create_room", "Name invalid. Cannot create room" )
+        } else {
+            let room = new Room( data.name, data.numbers, SOCKET_LIST[socket.id] );
+            SOCKET_LIST[socket.id].hosted = room.id;
+            ROOMS_LIST[room.id] = room;
         }
-
-        let room = {};
-        room.id = data.name;
-        SOCKET_LIST[socket.id].hosted = room.id;
-        room.numbers = data.numbers;
-        room.players = [];
-        room.players[ socket.id ] = SOCKET_LIST[socket.id];
-
-        ROOMS_LIST[room.id] = room;
     });
 
     socket.on("join_room", data => {
@@ -89,28 +86,33 @@ io.sockets.on("connection", socket => {
     });
 
     socket.on( "generate_combination", data => {
-        COMBINATION = [];
+        if( !data.name || !data.number ) {
+            console.error( "generate_combination", "Missing room name and/or number of players" );
+            return;
+        }
+
+        ROOMS_LIST[data.name].combination = [];
 
         if ( data.number === 2 ) {
             for( let i = 1; i <= 5; i++ ) {
-                COMBINATION.push( new Pin( COLORS[ rng( 0, 5 ) ] ) );
+                ROOMS_LIST[data.name].combination.push( new Pin( COLORS[ rng( 0, 5 ) ] ) );
             }
         } else if ( data.number === 3 ) {
             for( let i = 1; i <= 6; i++ ) {
-                COMBINATION.push( new Pin( COLORS[ rng( 0, 7 ) ] ) );
+                ROOMS_LIST[data.name].combination.push( new Pin( COLORS[ rng( 0, 7 ) ] ) );
             }
         } else if ( data.number >= 4 ) {
             MAX_TRIES = 8;
             for( let i = 1; i <= 6; i++ ) {
-                COMBINATION.push( new Pin( COLORS[ rng( 0, 7 ) ] ) );
+                ROOMS_LIST[data.name].combination.push( new Pin( COLORS[ rng( 0, 7 ) ] ) );
             }
         } else {
             for( let i = 1; i <= 4; i++ ) {
-                COMBINATION.push( new Pin( COLORS[ rng( 0, 5 ) ] ) );
+                ROOMS_LIST[data.name].combination.push( new Pin( COLORS[ rng( 0, 5 ) ] ) );
             }
         }
 
-        console.log( "generate_combination", COMBINATION );
+        console.log( "generate_combination", ROOMS_LIST[data.name].combination );
     } );
 });
 

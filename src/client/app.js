@@ -40,7 +40,7 @@ export default class App extends React.Component {
     };
 
     generateCombination = () => {
-        this.state.socket.emit( "generate_combination", { number: 2 } );
+        this.state.socket.emit( "generate_combination", { name: 'Hamilton', number: 2 } );
     }
 
     render() {
