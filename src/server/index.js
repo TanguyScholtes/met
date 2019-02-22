@@ -125,6 +125,40 @@ io.sockets.on("connection", socket => {
 
         console.log( "update_emoji", ROOMS_LIST[data.room].players[socket.id] );
     } );
+
+    socket.on( "submit-combination", data => {
+        if( !data.combination || !data.room ) {
+            console.error( "submit-combination", "Missing room name and/or combination" );
+            return;
+        }
+
+        // get user's submitted combination
+        let userCombination = [];
+        data.combination.forEach( color => {
+            userCombination.push( new Pin( color ) );
+        } );
+        // compare room's combination & user's submitted combination
+        if ( ROOMS_LIST[ data.room ].combination === userCombination ) {
+            console.log( "You won. GG WP !" );
+            return;
+        }
+
+        // hints
+        for ( let i = 0; i < ROOMS_LIST[ data.room ].combination.length; i++ ) {
+            for ( let j = 0; j < userCombination.length; j++ ) {
+                if ( ROOMS_LIST[ data.room ].combination[i] === userCombination[j] && i === j ) {
+                    // good color & good position => get green
+                    console.log( "submit-combination", `Pin number ${ j } is all good. Green.` );
+                } else if (  ) {
+
+                } else {
+
+                }
+            }
+        }
+
+        // return hints about user's combination
+    } );
 });
 
 /* var express = require('express');

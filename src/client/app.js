@@ -47,6 +47,11 @@ export default class App extends React.Component {
         this.state.socket.emit( "update_emoji", { emoji: emoji, room: 'Hamilton' } );
     }
 
+    submitCombination = () => {
+        const combination = [ 'yellow', 'blue', 'red', 'green', 'white' ];
+        this.state.socket.emit( "submit-combination", { combination: combination, room: 'Hamilton' } );
+    }
+
     render() {
         return (
             <div>
@@ -79,6 +84,8 @@ export default class App extends React.Component {
                         <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;sweat.gif" />
                     </button>
                 </div>
+
+                <button onClick={() => this.submitCombination()}>submit combination</button>
             </div>
         );
     }
