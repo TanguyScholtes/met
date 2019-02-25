@@ -43,6 +43,10 @@ export default props => {
         type: "number",
         name: "maxPlayers",
         placeholder: "Max players (1-4)",
+        min: 1,
+        max: 4,
+        step: 1,
+        defaultValue: 1,
     };
 
     if (joinRoom) {
@@ -61,6 +65,7 @@ export default props => {
         );
     } else {
         inputs.splice(2, 0, playersNumbers);
+        inputs[3].value = "Create & join";
         return (
             <div className="loginComp">
                 <div className="slider">

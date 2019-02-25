@@ -11,6 +11,10 @@ export default props => {
                     key={elem.name}
                     value={elem.value}
                     placeholder={elem.placeholder}
+                    min={elem.min}
+                    max={elem.max}
+                    step={elem.step}
+                    defaultValue={elem.defaultValue}
                 />,
             );
         });
