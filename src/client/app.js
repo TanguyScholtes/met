@@ -1,5 +1,6 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
+import "./scss/style.scss";
 import Login from "./components/constainers/Login";
 
 export default function App() {

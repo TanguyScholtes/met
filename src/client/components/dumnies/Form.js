@@ -17,5 +17,9 @@ export default props => {
         return form;
     };
 
-    return <form onSubmit={props.onSubmit}>{generateInputs()}</form>;
+    return (
+        <form onSubmit={props.onSubmit} className="formComp">
+            {generateInputs()}
+        </form>
+    );
 };

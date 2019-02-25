@@ -4,23 +4,6 @@
   "description": "A mastermind like game for BeCode",
   "author": "Anarion Lyanor Vlntngrgr",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AnarionBe/met.git"
-  },
-  "homepage": "https://github.com/AnarionBe/met",
-  "bugs": {
-    "url": "https://github.com/AnarionBe/met/issues"
-  },
-  "keywords": [
-    "node",
-    "react",
-    "websocket",
-    "sockets.io",
-    "react-dom",
-    "express",
-    "docker"
-  ],
   "scripts": {
     "lint": "npx eslint --fix --cache --ignore-pattern 'docs/*' src",
     "build:server": "npx babel src/server -s --out-dir bin/server",
@@ -54,17 +37,20 @@
     "html-webpack-plugin": "^3.2.0",
     "husky": "^1.0.1",
     "lint-staged": "^8.1.0",
+    "node-sass": "^4.11.0",
     "prettier": "^1.14.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
     "uglifyjs-webpack-plugin": "^2.0.1",
-    "webpack": "^4.29.1",
+    "webpack": "^4.29.5",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.2.0"
   },
   "dependencies": {
     "express": "^4.16.4",
-    "react": "^16.8.1",
+    "react": "^16.8.3",
     "react-cool-tabs": "^1.1.6",
-    "react-dom": "^16.8.1",
+    "react-dom": "^16.8.3",
     "react-router-dom": "^4.3.1",
     "react-validation": "^3.0.7"
   },

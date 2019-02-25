@@ -2,6 +2,8 @@ import React from "react";
 import Form from "../dumnies/Form";
 
 export default props => {
+    const [joinRoom, setJoin] = React.useState(true);
+
     const joinRoomHandle = e => {
         e.preventDefault();
         props.setRoom(e.target.room.value);
@@ -9,6 +11,16 @@ export default props => {
         props.setGameOn(true);
     };
 
+    const changeMode = e => {
+        e.preventDefault();
+        setJoin(!joinRoom);
+    };
+
+    const createRoomHandle = e => {
+        e.preventDefault();
+    };
+
+    // defining inputs to add in the form
     const inputs = [
         {
             type: "text",
@@ -27,9 +39,28 @@ export default props => {
         },
     ];
 
-    return (
-        <div className="loginComp">
-            <Form onSubmit={joinRoomHandle} inputs={inputs} />
-        </div>
-    );
+    const playersNumbers = {
+        type: "number",
+        name: "maxPlayers",
+        placeholder: "Max players (1-4)",
+    };
+
+    if (joinRoom) {
+        return (
+            <div className="loginComp">
+                <button onClick={changeMode}>{"Create"}</button>
+                <h2>Join a room</h2>
+                <Form onSubmit={joinRoomHandle} inputs={inputs} />
+            </div>
+        );
+    } else {
+        inputs.splice(2, 0, playersNumbers);
+        return (
+            <div className="loginComp">
+                <button onClick={changeMode}>{"Join"}</button>
+                <h2>Create room</h2>
+                <Form onSubmit={createRoomHandle} inputs={inputs} />
+            </div>
+        );
+    }
 };
