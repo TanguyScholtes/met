@@ -48,7 +48,13 @@ export default props => {
     if (joinRoom) {
         return (
             <div className="loginComp">
-                <button onClick={changeMode}>{"Create"}</button>
+                <div className="slider">
+                    <label>Join room</label>
+                    <button onClick={changeMode} className="toggleSlider">
+                        <span className="toggler" />
+                    </button>
+                    <label>Create room</label>
+                </div>
                 <h2>Join a room</h2>
                 <Form onSubmit={joinRoomHandle} inputs={inputs} />
             </div>
@@ -57,7 +63,13 @@ export default props => {
         inputs.splice(2, 0, playersNumbers);
         return (
             <div className="loginComp">
-                <button onClick={changeMode}>{"Join"}</button>
+                <div className="slider">
+                    <label>Join room</label>
+                    <button onClick={changeMode} className="toggleSlider right">
+                        <span className="toggler" />
+                    </button>
+                    <label>Create room</label>
+                </div>
                 <h2>Create room</h2>
                 <Form onSubmit={createRoomHandle} inputs={inputs} />
             </div>
