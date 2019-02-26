@@ -1,14 +1,27 @@
-.formComp{
+.loginComp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.main {
+    height: 100vh;
+}
+
+.container {
     display: flex;
     flex-direction: column;
     width: 500px;
-    height: 300px;
-    justify-content: space-between
+    height: 400px;
 }
 
-.formComp input {
+input {
+    background-color: #a5adb4;
+    color: black;
     height: 50px;
     border-radius: 20px;
+    display: inline-block;
 }
 
 .toggleSlider {
@@ -24,6 +37,13 @@
 
 .toggleSlider::-moz-focus-inner {
     border: 0;
+}
+
+form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .toggler {
@@ -48,4 +68,13 @@
 button {
     margin-left: 10px;
     margin-right: 10px;
+}
+
+html {
+    color: white;
+    background-color: rgb(19, 19, 19);
+}
+
+.submit {
+    background-color: green;
 }

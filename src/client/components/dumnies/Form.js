@@ -15,6 +15,7 @@ export default props => {
                     max={elem.max}
                     step={elem.step}
                     defaultValue={elem.defaultValue}
+                    className={elem.className}
                 />,
             );
         });

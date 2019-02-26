@@ -1,7 +1,10 @@
 import React from "react";
 import Form from "../dumnies/Form";
+import io from "socket.io-client";
 
 export default props => {
+    const socket = io();
+
     const [joinRoom, setJoin] = React.useState(true);
 
     const joinRoomHandle = e => {
@@ -36,6 +39,7 @@ export default props => {
             type: "submit",
             name: "submit",
             value: "Join",
+            className: "submit",
         },
     ];
 
@@ -52,15 +56,17 @@ export default props => {
     if (joinRoom) {
         return (
             <div className="loginComp">
-                <div className="slider">
-                    <label>Join room</label>
-                    <button onClick={changeMode} className="toggleSlider">
-                        <span className="toggler" />
-                    </button>
-                    <label>Create room</label>
+                <div className="container">
+                    <div className="slider">
+                        <label>Join room</label>
+                        <button onClick={changeMode} className="toggleSlider">
+                            <span className="toggler" />
+                        </button>
+                        <label>Create room</label>
+                    </div>
+                    <h2>Join a room</h2>
+                    <Form onSubmit={joinRoomHandle} inputs={inputs} />
                 </div>
-                <h2>Join a room</h2>
-                <Form onSubmit={joinRoomHandle} inputs={inputs} />
             </div>
         );
     } else {
@@ -68,15 +74,19 @@ export default props => {
         inputs[3].value = "Create & join";
         return (
             <div className="loginComp">
-                <div className="slider">
-                    <label>Join room</label>
-                    <button onClick={changeMode} className="toggleSlider right">
-                        <span className="toggler" />
-                    </button>
-                    <label>Create room</label>
+                <div className="container">
+                    <div className="slider">
+                        <label>Join room</label>
+                        <button
+                            onClick={changeMode}
+                            className="toggleSlider right">
+                            <span className="toggler" />
+                        </button>
+                        <label>Create room</label>
+                    </div>
+                    <h2>Create room</h2>
+                    <Form onSubmit={createRoomHandle} inputs={inputs} />
                 </div>
-                <h2>Create room</h2>
-                <Form onSubmit={createRoomHandle} inputs={inputs} />
             </div>
         );
     }

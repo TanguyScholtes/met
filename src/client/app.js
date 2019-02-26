@@ -10,9 +10,7 @@ export default function App() {
 
     if (!isGameOn) {
         return (
-            <div>
-                <h1>Not in game</h1>
-
+            <div className="main">
                 <Login
                     setPseudo={setPseudo}
                     setGameOn={setGameOn}
@@ -22,7 +20,7 @@ export default function App() {
         );
     } else {
         return (
-            <div>
+            <div className="main">
                 <h1>
                     Welcome {pseudo} in {room} room
                 </h1>
