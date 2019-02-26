@@ -45,50 +45,92 @@ io.sockets.on("connection", socket => {
         let user = new User( socket.id, data.pseudo );
         SOCKET_LIST[socket.id] = user;
         console.log("login", SOCKET_LIST);
+        socket.emit( "login_event", { users: SOCKET_LIST } );
+        return SOCKET_LIST;
     });
 
     socket.on("create_room", data => {
         if (ROOMS_LIST[data.name]) {
-            console.error("create_room", `${ROOMS_LIST[data.name]} already exists`);
+            let message = `${ROOMS_LIST[data.name]} already exists`
+            console.error("create_room", message);
+            let error = new Error( message )
+            socket.emit( "create_room_event", { error: error } );
+            return error;
         } else if ( !data.name || typeof data.name != 'string' || data.name === '' ) {
-            console.error( "create_room", "Name invalid. Cannot create room" )
+            let message = "Name invalid. Cannot create room"
+            console.error( "create_room", message );
+            let error = new Error( message );
+            socket.emit( "create_room_event", { error: error } );
+            return error;
         } else {
             let room = new Room( data.name, data.numbers, SOCKET_LIST[socket.id] );
             SOCKET_LIST[socket.id].hosted = room.id;
             ROOMS_LIST[room.id] = room;
+            console.log( "create_room", room );
+            socket.emit( "create_room_event", { room: room } );
+            return room;
         }
     });
 
     socket.on("join_room", data => {
-        ROOMS_LIST[data.name].players[ socket.id ] = SOCKET_LIST[socket.id];
-        console.log("join_room", ROOMS_LIST[data.name]);
+        if( ROOMS_LIST[data.name] && ROOMS_LIST[data.name].players.length < ROOMS_LIST[data.name].numbers ) {
+            // room exists & has available slots
+            ROOMS_LIST[data.name].players[ socket.id ] = SOCKET_LIST[socket.id];
+            console.log("join_room", ROOMS_LIST[data.name]);
+            socket.emit( "join_room_event", { room: ROOMS_LIST[data.name] } );
+            return ROOMS_LIST[data.name];
+        } else {
+            let message = `Room ${data.name} is full or does not exists`;
+            console.error( "join_room", message );
+            let error = new Error( message );
+            socket.emit( "join_room_event", { error: error } );
+            return error;
+        }
     });
 
     socket.on( "get_room", data => {
         if( ROOMS_LIST[ data.name ] ) {
             console.log( "get_room", ROOMS_LIST[ data.name ] );
+            socket.emit( "get_room_event", { room: ROOMS_LIST[ data.name ] } );
+            return ROOMS_LIST[ data.name ];
         } else {
-            console.error( "get_room", `No room with name ${data.name}` );
+            let message = `No room with name ${data.name}`;
+            console.error( "get_room", message );
+            let error = new Error( message );
+            socket.emit( "get_room_event", { error: error } );
+            return error;
         }
     } );
 
     socket.on( "get_all_rooms", () => {
         if( ROOMS_LIST.length >= 0 ) {
             console.log( "get_all_rooms", ROOMS_LIST );
+            socket.emit( "get_all_rooms_event", { rooms: ROOMS_LIST } );
+            return ROOMS_LIST;
         } else {
-            console.error( "get_all_rooms", "No room to display" );
+            let message = `No room to display`;
+            console.error( "get_all_rooms", message );
+            let error = new Error( message );
+            socket.emit( "get_all_rooms_event", { error: error } );
+            return error;
         }
     } );
 
     socket.on("disconnect", () => {
-        console.log( "disconnect", SOCKET_LIST[socket.id].pseudo );
+        let message = `Disconnected ${SOCKET_LIST[socket.id].pseudo}`;
+        console.log( "disconnect", message );
         delete SOCKET_LIST[socket.id];
+        socket.emit( "disconnect_event", { success: message } );
+        return message;
     });
 
     socket.on( "generate_combination", data => {
         if( !data.name || !data.number ) {
-            console.error( "generate_combination", "Missing room name and/or number of players" );
-            return;
+            let message = "Missing room name and/or number of players";
+            console.error( "generate_combination", message );
+            let error = new Error( message );
+            socket.emit( "generate_combination_event", { error: error } );
+            return error;
         }
 
         ROOMS_LIST[data.name].combination = [];
@@ -113,23 +155,33 @@ io.sockets.on("connection", socket => {
         }
 
         console.log( "generate_combination", ROOMS_LIST[data.name].combination );
+        socket.emit( "generate_combination_event", { combination: ROOMS_LIST[data.name].combination } );
+        return ROOMS_LIST[data.name].combination;
     } );
 
     socket.on( "update_emoji", data => {
         if( !data.emoji || !data.room ) {
-            console.error( "update_emoji", "Missing room name and/or emoji" );
-            return;
+            let message = "Missing room name and/or emoji";
+            console.error( "update_emoji", message );
+            let error = new Error( message );
+            socker.emit( "update_emoji_event", { error: error } );
+            return error;
         }
 
         ROOMS_LIST[data.room].players[socket.id].status = data.emoji;
 
         console.log( "update_emoji", ROOMS_LIST[data.room].players[socket.id] );
+        socket.emit( "update_emoji_event", { player: ROOMS_LIST[data.room].players[socket.id] } );
+        return ROOMS_LIST[data.room].players[socket.id];
     } );
 
-    socket.on( "submit-combination", data => {
+    socket.on( "submit_combination", data => {
         if( !data.combination || !data.room ) {
-            console.error( "submit-combination", "Missing room name and/or combination" );
-            return;
+            let message = "Missing room name and/or combination";
+            console.error( "submit-combination", message );
+            let error = new Error( message );
+            socket.emit( "submit_combination_event", { error: error } );
+            return error;
         }
 
         // get user's submitted combination
@@ -140,7 +192,8 @@ io.sockets.on("connection", socket => {
         // compare room's combination & user's submitted combination
         if ( ROOMS_LIST[ data.room ].combination === userCombination ) {
             console.log( "You won. GG WP !" );
-            return;
+            socket.emit( "submit_combination_event", { success: "You won. GG WP !" } );
+            return "You won. GG WP !";
         }
 
         // hints - based on ponderation
@@ -166,6 +219,8 @@ io.sockets.on("connection", socket => {
 
         // return hints about user's combination
         console.log( "submit-combination", userCombination );
+        socket.emit( "submit_combination_event", { hints: userCombination } );
+        return userCombination;
     } );
 });
 

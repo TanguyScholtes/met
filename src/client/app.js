@@ -49,7 +49,7 @@ export default class App extends React.Component {
 
     submitCombination = () => {
         const combination = [ 'yellow', 'blue', 'red', 'green', 'white' ];
-        this.state.socket.emit( "submit-combination", { combination: combination, room: 'Hamilton' } );
+        this.state.socket.emit( "submit_combination", { combination: combination, room: 'Hamilton' } );
     }
 
     render() {
