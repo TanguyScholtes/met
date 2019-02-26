@@ -73,14 +73,23 @@ io.sockets.on("connection", socket => {
     });
 
     socket.on("join_room", data => {
-        if( ROOMS_LIST[data.name] && ROOMS_LIST[data.name].players.length < ROOMS_LIST[data.name].numbers ) {
-            // room exists & has available slots
+        if( ROOMS_LIST[data.name] && ROOMS_LIST[data.name].players.length < ROOMS_LIST[data.name].playersNumber && ROOMS_LIST[data.name].state === "waiting" ) {
+            // room exists & has available slots & is joinable
+
+            // Add user to room
             ROOMS_LIST[data.name].players[ socket.id ] = SOCKET_LIST[socket.id];
+
+            // If joining user fills the romm to desired number, switch room state
+            if( ROOMS_LIST[data.name].players.length === ROOMS_LIST[data.name].playersNumber ) {
+                ROOMS_LIST[data.name].state = "pending";
+            }
+
+            // Send room with new user added
             console.log("join_room", ROOMS_LIST[data.name]);
             socket.emit( "join_room_event", { room: ROOMS_LIST[data.name] } );
             return ROOMS_LIST[data.name];
         } else {
-            let message = `Room ${data.name} is full or does not exists`;
+            let message = `Room ${data.name} is full, a game in underway or room does not exists`;
             console.error( "join_room", message );
             let error = new Error( message );
             socket.emit( "join_room_event", { error: error } );
