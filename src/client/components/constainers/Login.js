@@ -1,10 +1,12 @@
 import React from "react";
 import Form from "../dumnies/Form";
-import io from "socket.io-client";
+import * as socket from "../../socket";
 
 export default props => {
+    socket.ask_allRooms();
+
     const [joinRoom, setJoin] = React.useState(true);
-    const [socket] = React.useState(io());
+    const [roomList, setList] = React.useState([]);
 
     const joinRoomHandle = e => {
         e.preventDefault();
@@ -21,13 +23,24 @@ export default props => {
     const createRoomHandle = e => {
         e.preventDefault();
 
-        socket.emit("create_room", {
+        socket.ask_createRoom({
             name: e.target.room.value,
             numbers: e.target.maxPlayers.value,
         });
-
-        socket.emit("get_all_rooms");
     };
+
+    const generateList = () => {
+        const list = [];
+        roomList.forEach(elem => {
+            list.push(<li>{elem}</li>);
+        });
+        return list;
+    };
+
+    socket.listen_createRoom(data => {
+        if (data.room && data.room.playersNumber != data.room.players.length)
+            setList([...roomList, data.room.id]);
+    });
 
     // defining inputs to add in the form
     const inputs = [
@@ -71,7 +84,10 @@ export default props => {
                         <label>Create room</label>
                     </div>
                     <h2>Join a room</h2>
-                    <Form onSubmit={joinRoomHandle} inputs={inputs} />
+                    <div className="joinZone">
+                        <Form onSubmit={joinRoomHandle} inputs={inputs} />
+                        <ul className="roomList">{generateList()}</ul>
+                    </div>
                 </div>
             </div>
         );
