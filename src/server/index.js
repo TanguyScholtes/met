@@ -143,21 +143,29 @@ io.sockets.on("connection", socket => {
             return;
         }
 
-        // hints
+        // hints - based on ponderation
+        // Each user-submitted element get a ponderation based on comparison with server-side combination elements :
+        // + 2 for good color & position
+        // + 1 for good color but wrong position
+        // + 0 for wrong color
+        // We keep only the highest ponderation for each pin, thus a match won't become a misplaced
         for ( let i = 0; i < ROOMS_LIST[ data.room ].combination.length; i++ ) {
             for ( let j = 0; j < userCombination.length; j++ ) {
-                if ( ROOMS_LIST[ data.room ].combination[i] === userCombination[j] && i === j ) {
-                    // good color & good position => get green
-                    console.log( "submit-combination", `Pin number ${ j } is all good. Green.` );
-                } else if (  ) {
-
-                } else {
-
+                if ( ROOMS_LIST[ data.room ].combination[i].color === userCombination[j].color && i === j ) {
+                    // good color & good position => get green (2)
+                    userCombination[j].hint = 2;
+                } else if ( ROOMS_LIST[ data.room ].combination[i].color === userCombination[j].color && i != j ) {
+                    // good color, wrong position => orange (1)
+                    if ( userCombination[j].hint < 1 ) {
+                        userCombination[j].hint = 1;
+                    }
                 }
+                // wrong color => red (0) / default value, not modif needed
             }
         }
 
         // return hints about user's combination
+        console.log( "submit-combination", userCombination );
     } );
 });
 
