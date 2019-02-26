@@ -3,9 +3,8 @@ import Form from "../dumnies/Form";
 import io from "socket.io-client";
 
 export default props => {
-    const socket = io();
-
     const [joinRoom, setJoin] = React.useState(true);
+    const [socket] = React.useState(io());
 
     const joinRoomHandle = e => {
         e.preventDefault();
@@ -21,6 +20,13 @@ export default props => {
 
     const createRoomHandle = e => {
         e.preventDefault();
+
+        socket.emit("create_room", {
+            name: e.target.room.value,
+            numbers: e.target.maxPlayers.value,
+        });
+
+        socket.emit("get_all_rooms");
     };
 
     // defining inputs to add in the form
