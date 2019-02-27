@@ -1,18 +1,18 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
 import "./scss/style.scss";
-import Login from "./components/constainers/Login";
+import Login from "./components/containers/Login";
 
 export default function App() {
     const [isGameOn, setGameOn] = React.useState(false);
-    const [pseudo, setPseudo] = React.useState("");
+    const [player, setPlayer] = React.useState("");
     const [room, setRoom] = React.useState("");
 
     if (!isGameOn) {
         return (
             <div className="main">
                 <Login
-                    setPseudo={setPseudo}
+                    setPlayer={setPlayer}
                     setGameOn={setGameOn}
                     setRoom={setRoom}
                 />
@@ -22,7 +22,7 @@ export default function App() {
         return (
             <div className="main">
                 <h1>
-                    Welcome {pseudo} in {room} room
+                    Welcome {player} in {room} room
                 </h1>
             </div>
         );

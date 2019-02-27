@@ -1,19 +1,16 @@
 import React from "react";
-import Form from "../dumnies/Form";
+import Form from "../dummies/Form";
 import * as socket from "../../socket";
 import axios from "axios";
 
 export default props => {
-    socket.ask_allRooms();
-
     const [joinRoom, setJoin] = React.useState(true);
-    const [roomList, setList] = React.useState(null);
+    const [roomList, setList] = React.useState(undefined);
 
     if (!roomList) {
         axios
             .get("/rooms")
             .then(res => {
-                console.log(res.data);
                 setList(res.data);
             })
             .catch(err => {
@@ -28,7 +25,7 @@ export default props => {
         props.setGameOn(true);
     };
 
-    const changeMode = e => {
+    const changeModeHandle = e => {
         e.preventDefault();
         setJoin(!joinRoom);
     };
@@ -43,6 +40,7 @@ export default props => {
     };
 
     const generateList = () => {
+        if (!roomList) return;
         const list = [];
         roomList.forEach(elem => {
             list.push(<li>{elem}</li>);
@@ -51,8 +49,12 @@ export default props => {
     };
 
     socket.listen_createRoom(data => {
-        if (data.room && data.room.playersNumber != data.room.players.length)
-            setList([...roomList, data.room.id]);
+        if (!roomList && data.room) {
+            setList([data.room.id]);
+            return;
+        }
+
+        if (data.room) setList([...roomList, data.room.id]);
     });
 
     // defining inputs to add in the form
@@ -91,7 +93,9 @@ export default props => {
                 <div className="container">
                     <div className="slider">
                         <label>Join room</label>
-                        <button onClick={changeMode} className="toggleSlider">
+                        <button
+                            onClick={changeModeHandle}
+                            className="toggleSlider">
                             <span className="toggler" />
                         </button>
                         <label>Create room</label>
@@ -113,7 +117,7 @@ export default props => {
                     <div className="slider">
                         <label>Join room</label>
                         <button
-                            onClick={changeMode}
+                            onClick={changeModeHandle}
                             className="toggleSlider right">
                             <span className="toggler" />
                         </button>
