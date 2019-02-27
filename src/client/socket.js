@@ -11,11 +11,3 @@ export const listen_createRoom = callback => {
         callback(data);
     });
 };
-
-export const ask_allRooms = () => {
-    socket.emit("get_all_rooms");
-};
-
-export const listen_allRooms = () => {
-    retun;
-};

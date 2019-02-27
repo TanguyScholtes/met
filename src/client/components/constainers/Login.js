@@ -1,12 +1,22 @@
 import React from "react";
 import Form from "../dumnies/Form";
 import * as socket from "../../socket";
+import axios from "axios";
 
 export default props => {
-    socket.ask_allRooms();
-
     const [joinRoom, setJoin] = React.useState(true);
-    const [roomList, setList] = React.useState([]);
+    const [roomList, setList] = React.useState(null);
+
+    if (!roomList) {
+        axios
+            .get("/rooms")
+            .then(res => {
+                setList(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
 
     const joinRoomHandle = e => {
         e.preventDefault();
