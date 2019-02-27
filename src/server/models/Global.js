@@ -43,9 +43,9 @@ const COLORS = [
     "pink",
 ];
 
-let rng = function ( min, max ) {
-    return Math.floor( Math.random() * ( max - min + 1 ) + min );
-}
+let rng = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+};
 
 module.exports = {
     ROOMS_LIST,
@@ -55,5 +55,5 @@ module.exports = {
     User,
     Pin,
     Room,
-    rng
+    rng,
 };

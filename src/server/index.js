@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.resolve(__dirname, "../../bin/client")));
 
 app.all("*", (req, res) => {
-    res.json( ROOMS_LIST );
+    res.json(ROOMS_LIST);
     res.sendFile(__dirname + "../../client/index.html");
 });
 

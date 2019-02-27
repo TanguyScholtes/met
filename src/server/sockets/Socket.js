@@ -3,7 +3,7 @@ const {RoomsHandler} = require("./RoomHandler");
 const {GameHandler} = require("./GameHandler");
 const {UserHandler} = require("./UserHandler");
 
-const SocketHandler = (socket) => {
+const SocketHandler = socket => {
     socket.id = Math.random();
 
     SOCKET_LIST[socket.id] = socket;
@@ -13,10 +13,10 @@ const SocketHandler = (socket) => {
     }
 
     socket.on("login", data => {
-        let user = new User( socket.id, data.pseudo );
+        let user = new User(socket.id, data.pseudo);
         SOCKET_LIST[socket.id] = user;
         console.log("login", SOCKET_LIST);
-        socket.emit( "login_event", { users: SOCKET_LIST } );
+        socket.emit("login_event", {users: SOCKET_LIST});
         return SOCKET_LIST;
     });
 
@@ -26,9 +26,9 @@ const SocketHandler = (socket) => {
 
     socket.on("disconnect", () => {
         let message = `Disconnected ${SOCKET_LIST[socket.id].pseudo}`;
-        console.log( "disconnect", message );
+        console.log("disconnect", message);
         delete SOCKET_LIST[socket.id];
-        socket.emit( "disconnect_event", { success: message } );
+        socket.emit("disconnect_event", {success: message});
         return message;
     });
 };

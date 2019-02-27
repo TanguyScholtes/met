@@ -15,7 +15,7 @@ const UserHandler = socket => {
         console.log("update_emoji", ROOMS_LIST[data.room].players[socket.id]);
         socket.emit("update_emoji_event", {
             player: ROOMS_LIST[data.room].players[socket.id],
-        }); 
+        });
         return ROOMS_LIST[data.room].players[socket.id];
     });
 };

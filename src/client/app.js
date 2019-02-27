@@ -22,35 +22,44 @@ export default class App extends React.Component {
     };
 
     login = () => {
-        this.state.socket.emit( "login", {
-            pseudo: "Lyanor"
-        } );
+        this.state.socket.emit("login", {
+            pseudo: "Lyanor",
+        });
     };
 
     logout = () => {
-        this.state.socket.emit( "disconnect" );
+        this.state.socket.emit("disconnect");
     };
 
     getRoom = () => {
-        this.state.socket.emit( "get_room", { name: 'Hamilton' } );
+        this.state.socket.emit("get_room", {name: "Hamilton"});
     };
 
     getAllRooms = () => {
-        this.state.socket.emit( "get_all_rooms" );
+        this.state.socket.emit("get_all_rooms");
     };
 
     generateCombination = () => {
-        this.state.socket.emit( "generate_combination", { name: 'Hamilton', number: 2 } );
-    }
+        this.state.socket.emit("generate_combination", {
+            name: "Hamilton",
+            number: 2,
+        });
+    };
 
     updateEmoji = emoji => {
-        this.state.socket.emit( "update_emoji", { emoji: emoji, room: 'Hamilton' } );
-    }
+        this.state.socket.emit("update_emoji", {
+            emoji: emoji,
+            room: "Hamilton",
+        });
+    };
 
     submitCombination = () => {
-        const combination = [ 'yellow', 'blue', 'red', 'green', 'white' ];
-        this.state.socket.emit( "submit_combination", { combination: combination, room: 'Hamilton' } );
-    }
+        const combination = ["yellow", "blue", "red", "green", "white"];
+        this.state.socket.emit("submit_combination", {
+            combination: combination,
+            room: "Hamilton",
+        });
+    };
 
     render() {
         return (
@@ -62,30 +71,64 @@ export default class App extends React.Component {
                 <button onClick={this.send}>Create Room</button>
                 <button onClick={this.quit}>Leave co</button>
                 <button onClick={() => this.logout()}>Logout</button>
-                <button onClick={() => this.generateCombination()}>generate combination</button>
+                <button onClick={() => this.generateCombination()}>
+                    generate combination
+                </button>
 
                 <div>
-                    <button onClick={() => this.updateEmoji( 'http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif' )}>
+                    <button
+                        onClick={() =>
+                            this.updateEmoji(
+                                "http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif",
+                            )
+                        }>
                         <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif" />
                     </button>
-                    <button onClick={() => this.updateEmoji( 'http://www.zeldalegends.net/admin/style_emoticons/default/l;0_o.gif' )}>
+                    <button
+                        onClick={() =>
+                            this.updateEmoji(
+                                "http://www.zeldalegends.net/admin/style_emoticons/default/l;0_o.gif",
+                            )
+                        }>
                         <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;0_o.gif" />
                     </button>
-                    <button onClick={() => this.updateEmoji( 'http://www.zeldalegends.net/admin/style_emoticons/default/l;angry.gif' )}>
+                    <button
+                        onClick={() =>
+                            this.updateEmoji(
+                                "http://www.zeldalegends.net/admin/style_emoticons/default/l;angry.gif",
+                            )
+                        }>
                         <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;angry.gif" />
                     </button>
-                    <button onClick={() => this.updateEmoji( 'http://www.zeldalegends.net/admin/style_emoticons/default/l;dizzy.gif' )}>
+                    <button
+                        onClick={() =>
+                            this.updateEmoji(
+                                "http://www.zeldalegends.net/admin/style_emoticons/default/l;dizzy.gif",
+                            )
+                        }>
                         <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;dizzy.gif" />
                     </button>
-                    <button onClick={() => this.updateEmoji( 'http://www.zeldalegends.net/admin/style_emoticons/default/l;T_T.gif' )}>
+                    <button
+                        onClick={() =>
+                            this.updateEmoji(
+                                "http://www.zeldalegends.net/admin/style_emoticons/default/l;T_T.gif",
+                            )
+                        }>
                         <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;T_T.gif" />
                     </button>
-                    <button onClick={() => this.updateEmoji( 'http://www.zeldalegends.net/admin/style_emoticons/default/l;sweat.gif' )}>
+                    <button
+                        onClick={() =>
+                            this.updateEmoji(
+                                "http://www.zeldalegends.net/admin/style_emoticons/default/l;sweat.gif",
+                            )
+                        }>
                         <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;sweat.gif" />
                     </button>
                 </div>
 
-                <button onClick={() => this.submitCombination()}>submit combination</button>
+                <button onClick={() => this.submitCombination()}>
+                    submit combination
+                </button>
             </div>
         );
     }

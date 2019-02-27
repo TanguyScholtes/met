@@ -10,7 +10,7 @@ const RoomsHandler = socket => {
             return error;
         } else if (
             !data.name ||
-             typeof data.name != "string" ||
+            typeof data.name != "string" ||
             data.name === ""
         ) {
             let message = "Name invalid. Cannot create room";
