@@ -13,7 +13,7 @@ export default class App extends React.Component {
     send = () => {
         this.state.socket.emit("create_room", {
             name: "Hamilton",
-            numbers: 2,
+            numbers: 1,
         });
     };
 
@@ -59,7 +59,7 @@ export default class App extends React.Component {
                 <button onClick={() => this.login()}>Login</button>
                 <button onClick={this.getRoom}>get Room</button>
                 <button onClick={this.getAllRooms}>get All Rooms</button>
-                <button onClick={this.send}>Click me</button>
+                <button onClick={this.send}>Create Room</button>
                 <button onClick={this.quit}>Leave co</button>
                 <button onClick={() => this.logout()}>Logout</button>
                 <button onClick={() => this.generateCombination()}>generate combination</button>
