@@ -4,6 +4,8 @@ import * as socket from "../../socket";
 import axios from "axios";
 
 export default props => {
+    socket.ask_allRooms();
+
     const [joinRoom, setJoin] = React.useState(true);
     const [roomList, setList] = React.useState(null);
 
@@ -11,6 +13,7 @@ export default props => {
         axios
             .get("/rooms")
             .then(res => {
+                console.log(res.data);
                 setList(res.data);
             })
             .catch(err => {
