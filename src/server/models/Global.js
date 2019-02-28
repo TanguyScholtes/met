@@ -5,33 +5,6 @@ let {User} = require("./User");
 let {Pin} = require("./Pin");
 let {Room} = require("./Room");
 
-const RULES = {
-    1: {
-        playersNumber: 1,
-        pinNumber: 4,
-        maxTries: 10,
-        colorNumber: 6,
-    },
-    2: {
-        playersNumber: 2,
-        pinNumber: 5,
-        maxTries: 10,
-        colorNumber: 6,
-    },
-    3: {
-        playersNumber: 3,
-        pinNumber: 6,
-        maxTries: 10,
-        colorNumber: 8,
-    },
-    4: {
-        playersNumber: 4,
-        pinNumber: 6,
-        maxTries: 8,
-        colorNumber: 8,
-    },
-};
-
 const COLORS = [
     "yellow",
     "blue",
@@ -43,17 +16,59 @@ const COLORS = [
     "pink",
 ];
 
-let rng = function(min, max) {
+const rng = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
+
+const getSocket = (socket_id) => {
+    return SOCKET_LIST.find(socket => socket.id === socket_id);
+}
+
+const addSocket = (socket) => {
+    SOCKET_LIST.push(socket);
+}
+
+const removeSocket = (socket_id) => {
+    const id = SOCKET_LIST.findIndex(el => el.id === socket_id);
+    delete SOCKET_LIST[id];
+}
+
+const getRoom = (room_name) => {
+    return ROOMS_LIST.find(room => room.id === room_name);
+}
+
+const getRoomsForSelection = () => {
+    return ROOMS_LIST.map(el => el.displaySelection());
+}
+
+const addRoom = (room) => {
+    ROOMS_LIST.push(room);
+}
+
+const removeRoom = (room_name) => {
+    const id = ROOMS_LIST.findIndex(el => el.name === room_name);
+    delete ROOMS_LIST[id];
+}
+
+const updateRoom = (room) => {
+    const id = ROOMS_LIST.findIndex(el => el.name === room.name);
+    ROOMS_LIST[id] = room;
+}
 
 module.exports = {
     ROOMS_LIST,
     SOCKET_LIST,
     COLORS,
-    RULES,
     User,
     Pin,
     Room,
     rng,
+    getSocket,
+    addSocket,
+    removeSocket,
+    getRoom,
+    getRoomsForSelection,
+    addRoom,
+    removeRoom,
+    updateRoom,
 };

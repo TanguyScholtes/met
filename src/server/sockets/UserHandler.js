@@ -1,22 +1,22 @@
-const {ROOMS_LIST} = require("../models/Global");
+const {getRoom} = require("../models/Global");
 
 const UserHandler = socket => {
     socket.on("update_emoji", data => {
-        if (!data.emoji || !data.room) {
+        console.log(data);
+        if (!data.emoji || !data.name || !data.pseudo) {
             let message = "Missing room name and/or emoji";
             console.error("update_emoji", message);
-            let error = new Error(message);
-            socker.emit("update_emoji_event", {error: error});
-            return error;
+            socket.emit("update_emoji_event", {error: new Error(message)});
+            return;
         }
 
-        ROOMS_LIST[data.room].players[socket.id].status = data.emoji;
+        getRoom(data.name).getPlayer(data.pseudo).status = data.emoji;
 
-        console.log("update_emoji", ROOMS_LIST[data.room].players[socket.id]);
+        console.log("update_emoji", getRoom(data.name).getPlayer(data.pseudo));
         socket.emit("update_emoji_event", {
-            player: ROOMS_LIST[data.room].players[socket.id],
+            player: getRoom(data.name).getPlayer(data.pseudo),
         });
-        return ROOMS_LIST[data.room].players[socket.id];
+        return;
     });
 };
 
