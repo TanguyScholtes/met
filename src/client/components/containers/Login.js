@@ -20,7 +20,14 @@ export default props => {
 
     const joinRoomHandle = e => {
         e.preventDefault();
-        socket.ask_joinRoom({name: e.target.room.value});
+        socket.ask_joinRoom({
+            name: e.target.room.value,
+            pseudo: e.target.pseudo.value,
+        });
+
+        props.setRoom(e.target.room.value);
+        props.setPlayer(e.target.pseudo.value);
+        props.setGameOn(true);
     };
 
     const changeModeHandle = e => {
