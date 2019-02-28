@@ -14,17 +14,12 @@ export default class App extends React.Component {
         this.state.socket.emit("create_room", {
             name: "Hamilton",
             numbers: 1,
+            pseudo: "Lyanor"
         });
     };
 
     quit = () => {
         this.state.socket.emit("join_room", {name: "Hamilton"});
-    };
-
-    login = () => {
-        this.state.socket.emit("login", {
-            pseudo: "Lyanor",
-        });
     };
 
     logout = () => {
@@ -49,7 +44,8 @@ export default class App extends React.Component {
     updateEmoji = emoji => {
         this.state.socket.emit("update_emoji", {
             emoji: emoji,
-            room: "Hamilton",
+            name: "Hamilton",
+            pseudo: "Lyanor"
         });
     };
 
@@ -57,7 +53,7 @@ export default class App extends React.Component {
         const combination = ["yellow", "blue", "red", "green", "white"];
         this.state.socket.emit("submit_combination", {
             combination: combination,
-            room: "Hamilton",
+            name: "Hamilton",
         });
     };
 
@@ -65,7 +61,6 @@ export default class App extends React.Component {
         return (
             <div>
                 <h1>Hello World</h1>
-                <button onClick={() => this.login()}>Login</button>
                 <button onClick={this.getRoom}>get Room</button>
                 <button onClick={this.getAllRooms}>get All Rooms</button>
                 <button onClick={this.send}>Create Room</button>

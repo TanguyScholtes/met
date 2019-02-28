@@ -1,40 +1,40 @@
-let {ROOMS_LIST, RULES, COLORS, Pin, rng} = require("../models/Global");
+let {COLORS, Pin, rng, updateRoom, getRoom} = require("../models/Global");
 
 const GameHandler = socket => {
     socket.on("generate_combination", data => {
+        let message = undefined;
+
         if (!data.name) {
-            let message = "Missing room name and/or number of players";
-            console.error("generate_combination", message);
-            let error = new Error(message);
-            socket.emit("generate_combination_event", {error: error});
-            return error;
+            message = "Missing room name and/or number of players";
         }
 
-        if (ROOMS_LIST[data.name]) {
-            ROOMS_LIST[data.name].combination = [];
-            const roomRule = RULES[ROOMS_LIST[data.name].playersNumber];
-
-            console.log(roomRule);
-
-            for (let i = 0; i < roomRule.pinNumber; i++) {
-                ROOMS_LIST[data.name].combination.push(
-                    new Pin(COLORS[rng(0, roomRule.colorNumber - 1)]),
+        if (getRoom(data.name) && !message) {
+            let room = getRoom(data.name);
+            for (let i = 0; i < room.rule.pinNumber; i++) {
+                room.combination.push(
+                    new Pin(COLORS[rng(0, room.rule.colorNumber - 1)]),
                 );
             }
+            updateRoom(room);
 
             console.log(
                 "generate_combination",
-                ROOMS_LIST[data.name].combination,
+                room.combination,
             );
             socket.emit("generate_combination_event", {
-                combination: ROOMS_LIST[data.name].combination,
+                combination: room.combination,
             });
-            return ROOMS_LIST[data.name].combination;
+            return;
+        } else {
+            message = "Room not found. Impossible to generate combination.";
         }
+    
+        console.error("generate_combination", message);
+        socket.emit("generate_combination_event", {error: new Error(message)});
     });
 
     socket.on("submit_combination", data => {
-        if (!data.combination || !data.room) {
+        if (!data.combination || !data.name) {
             let message = "Missing room name and/or combination";
             console.error("submit-combination", message);
             let error = new Error(message);
@@ -48,12 +48,12 @@ const GameHandler = socket => {
             userCombination.push(new Pin(color));
         });
         // compare room's combination & user's submitted combination
-        if (ROOMS_LIST[data.room].combination === userCombination) {
+        if (getRoom(data.name).combination === userCombination) {
             console.log("You won. GG WP !");
             socket.emit("submit_combination_event", {
                 success: "You won. GG WP !",
             });
-            return "You won. GG WP !";
+            return;
         }
 
         // hints - based on ponderation
@@ -62,17 +62,17 @@ const GameHandler = socket => {
         // + 1 for good color but wrong position
         // + 0 for wrong color
         // We keep only the highest ponderation for each pin, thus a match won't become a misplaced
-        for (let i = 0; i < ROOMS_LIST[data.room].combination.length; i++) {
+        for (let i = 0; i < getRoom(data.name).combination.length; i++) {
             for (let j = 0; j < userCombination.length; j++) {
                 if (
-                    ROOMS_LIST[data.room].combination[i].color ===
+                    getRoom(data.name).combination[i].color ===
                         userCombination[j].color &&
                     i === j
                 ) {
                     // good color & good position => get green (2)
                     userCombination[j].hint = 2;
                 } else if (
-                    ROOMS_LIST[data.room].combination[i].color ===
+                    getRoom(data.name).combination[i].color ===
                         userCombination[j].color &&
                     i != j
                 ) {
@@ -88,7 +88,7 @@ const GameHandler = socket => {
         // return hints about user's combination
         console.log("submit-combination", userCombination);
         socket.emit("submit_combination_event", {hints: userCombination});
-        return userCombination;
+        return;
     });
 };
 
