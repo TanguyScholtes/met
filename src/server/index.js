@@ -3,20 +3,20 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const {APP_PORT} = process.env || 5000;
 
-let app = express();
-let http = require("http").Server(app);
-let io = require("socket.io")(http);
+const app = express();
+const http = require("http").Server(app);
+const io = require("socket.io")(http);
 
-let {User} = require("./models/User.js");
-let {Pin} = require("./models/Pin.js");
-let {Room} = require("./models/Room.js");
+const {User} = require("./models/User.js");
+const {Pin} = require("./models/Pin.js");
+const {Room} = require("./models/Room.js");
 
-let rng = function(min, max) {
+const rng = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-let SOCKET_LIST = [];
-let ROOMS_LIST = [];
+const SOCKET_LIST = [];
+const ROOMS_LIST = [];
 const COLORS = [
     "yellow",
     "blue",
