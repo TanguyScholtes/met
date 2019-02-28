@@ -3,7 +3,7 @@ import io from "socket.io-client";
 const socket = io();
 
 export const ask_createRoom = data => {
-    socket.emit("create_room", data);
+    return socket.emit("create_room", data);
 };
 
 export const listen_createRoom = callback => {
@@ -17,5 +17,5 @@ export const ask_allRooms = () => {
 };
 
 export const listen_allRooms = () => {
-    retun;
+    return;
 };

@@ -5,9 +5,10 @@ class Room {
         this.maxTries = 10;
         this.combination = [];
         this.playersNumber = playersNumber;
-        this.players = [];
+        this.players = {};
 
-        this.players[ host.id ] = host;
+        let host_id = host.id;
+        this.players.host_id = host;
     }
 }
 

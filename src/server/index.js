@@ -15,8 +15,8 @@ let rng = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-let SOCKET_LIST = [];
-let ROOMS_LIST = [];
+let SOCKET_LIST = {};
+let ROOMS_LIST = {};
 const COLORS = [
     "yellow",
     "blue",
@@ -48,7 +48,9 @@ http.listen(APP_PORT, () =>
 io.sockets.on("connection", socket => {
     socket.id = Math.random();
 
-    SOCKET_LIST[socket.id] = socket;
+    let socket_id = socket.id;
+
+    SOCKET_LIST.socket_id = socket;
 
     for (let i in SOCKET_LIST) {
         console.log("base", i);
@@ -56,15 +58,16 @@ io.sockets.on("connection", socket => {
 
     socket.on("login", data => {
         let user = new User(socket.id, data.pseudo);
-        SOCKET_LIST[socket.id] = user;
+        SOCKET_LIST.socket_id = user;
         console.log("login", SOCKET_LIST);
         socket.emit("login_event", {users: SOCKET_LIST});
         return SOCKET_LIST;
     });
 
     socket.on("create_room", data => {
-        if (ROOMS_LIST[data.name]) {
-            let message = `${ROOMS_LIST[data.name]} already exists`;
+        let data_name = data.name;
+        if (ROOMS_LIST.data_name) {
+            let message = `${ROOMS_LIST.data_name.id} already exists`;
             console.error("create_room", message);
             let error = new Error(message);
             socket.emit("create_room_event", {error: error});

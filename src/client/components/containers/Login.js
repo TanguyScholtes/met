@@ -1,11 +1,9 @@
 import React from "react";
-import Form from "../dumnies/Form";
+import Form from "../dummies/Form";
 import * as socket from "../../socket";
 import axios from "axios";
 
 export default props => {
-    socket.ask_allRooms();
-
     const [joinRoom, setJoin] = React.useState(true);
     const [roomList, setList] = React.useState(null);
 
@@ -43,11 +41,14 @@ export default props => {
     };
 
     const generateList = () => {
+        /*
         const list = [];
         roomList.forEach(elem => {
             list.push(<li>{elem}</li>);
         });
         return list;
+        */
+        return;
     };
 
     socket.listen_createRoom(data => {

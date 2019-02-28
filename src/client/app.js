@@ -1,18 +1,46 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
 import "./scss/style.scss";
-import Login from "./components/constainers/Login";
+import Login from "./components/containers/Login";
+import Game from "./components/containers/Game";
 
 export default function App() {
-    const [isGameOn, setGameOn] = React.useState(false);
-    const [pseudo, setPseudo] = React.useState("");
-    const [room, setRoom] = React.useState("");
+    const [isGameOn, setGameOn] = React.useState(true);
+    const [player, setPlayer] = React.useState( {
+        id: 1234567890,
+        pseudo: 'Lyanor',
+        score: 0,
+        hosted: 'Hamilton',
+        status: 'http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif'
+    } );
+    const [room, setRoom] = React.useState( {
+        id: 'Hamilton',
+        maxTries: 10,
+        combination: [],
+        playersNumber: 2,
+        players: [
+            {
+                id: 1234567890,
+                pseudo: 'Lyanor',
+                score: 0,
+                hosted: 'Hamilton',
+                status: 'http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif'
+            },
+            {
+                id: 9876543210,
+                pseudo: 'Anarion',
+                score: 0,
+                hosted: '',
+                status: 'http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif'
+            }
+        ]
+    } );
 
     if (!isGameOn) {
         return (
             <div className="main">
                 <Login
-                    setPseudo={setPseudo}
+                    setPlayer={setPlayer}
                     setGameOn={setGameOn}
                     setRoom={setRoom}
                 />
@@ -21,9 +49,10 @@ export default function App() {
     } else {
         return (
             <div className="main">
-                <h1>
-                    Welcome {pseudo} in {room} room
-                </h1>
+                <Game
+                    player={player}
+                    room={room}
+                />
             </div>
         );
     }
