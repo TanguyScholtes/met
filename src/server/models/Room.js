@@ -1,6 +1,5 @@
 class Room {
-
-    constructor ( name, playersNumber, host ) {
+    constructor(name, playersNumber, host) {
         this.id = name;
         this.maxTries = 10;
         this.combination = [];
@@ -13,8 +12,8 @@ class Room {
          * "pending" - Game is currently underway. No joining
          */
 
-        this.players[ host.id ] = host;
+        this.players[host.id] = host;
     }
 }
 
-module.exports = { Room };
+module.exports = {Room};
