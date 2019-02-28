@@ -4,23 +4,6 @@
   "description": "A mastermind like game for BeCode",
   "author": "Anarion Lyanor Vlntngrgr",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AnarionBe/met.git"
-  },
-  "homepage": "https://github.com/AnarionBe/met",
-  "bugs": {
-    "url": "https://github.com/AnarionBe/met/issues"
-  },
-  "keywords": [
-    "node",
-    "react",
-    "websocket",
-    "sockets.io",
-    "react-dom",
-    "express",
-    "docker"
-  ],
   "scripts": {
     "lint": "npx eslint --fix --cache --ignore-pattern 'docs/*' src",
     "build:server": "npx babel src/server -s --out-dir bin/server",
@@ -37,12 +20,12 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.1.0",
-    "@babel/core": "^7.1.0",
-    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
     "@babel/plugin-proposal-decorators": "^7.1.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
     "@babel/polyfill": "^7.0.0",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.0",
     "babel-loader": "^8.0.2",
@@ -54,18 +37,22 @@
     "html-webpack-plugin": "^3.2.0",
     "husky": "^1.0.1",
     "lint-staged": "^8.1.0",
+    "node-sass": "^4.11.0",
     "prettier": "^1.14.3",
-    "uglifyjs-webpack-plugin": "^2.0.1",
-    "webpack": "^4.29.1",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "uglifyjs-webpack-plugin": "^2.1.2",
+    "webpack": "^4.29.5",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "express": "^4.16.4",
     "http": "0.0.0",
     "react": "^16.8.1",
     "react-cool-tabs": "^1.1.6",
-    "react-dom": "^16.8.1",
+    "react-dom": "^16.8.3",
     "react-router-dom": "^4.3.1",
     "react-validation": "^3.0.7",
     "socket.io": "^2.2.0",

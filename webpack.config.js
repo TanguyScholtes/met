@@ -73,7 +73,9 @@ module.exports = env => {
                 {
                     test: /\.scss$/,
                     use: [
-                        // ADD loader from style
+                        "style-loader", // creates style nodes from JS strings
+                        "css-loader", // translates CSS into CommonJS
+                        "sass-loader", // compiles Sass to CSS, using Node Sass by default
                     ]
                 },
                 {

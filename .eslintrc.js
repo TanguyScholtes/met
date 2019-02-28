@@ -74,7 +74,7 @@ module.exports = {
         "func-style": [ERROR, "expression"],
         "global-require": ERROR,
         "handle-callback-err": WARNING,
-        "new-cap": ERROR,
+        // "new-cap": ERROR,
         "newline-after-var": [ERROR, "always"],
 
         "no-alert": WARNING,

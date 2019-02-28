@@ -1,99 +1,119 @@
-const {ROOMS_LIST, SOCKET_LIST, Room} = require("../models/Global");
+const {
+    ROOMS_LIST,
+    getRoom,
+    addRoom,
+    getRoomsForSelection,
+    Room,
+    User,
+} = require("../models/Global");
 
-const RoomsHandler = socket => {
+const roomsHandler = socket => {
     socket.on("create_room", data => {
-        if (ROOMS_LIST[data.name]) {
-            let message = `${ROOMS_LIST[data.name]} already exists`;
-            console.error("create_room", message);
-            let error = new Error(message);
-            socket.emit("create_room_event", {error: error});
-            return error;
+        let errorMsg;
+
+        if (getRoom(data.name)) {
+            errorMsg = `${getRoom(data.name).id} already exists`;
         } else if (
             !data.name ||
             typeof data.name != "string" ||
             data.name === ""
         ) {
-            let message = "Name invalid. Cannot create room";
-            console.error("create_room", message);
-            let error = new Error(message);
-            socket.emit("create_room_event", {error: error});
-            return error;
+            errorMsg = "Name invalid. Cannot create room";
+        } else if (
+            !data.pseudo ||
+            typeof data.pseudo != "string" ||
+            data.pseudo === ""
+        ) {
+            errorMsg = "Pseudo invalid. Cannot create room";
+        } else if (
+            !data.numbers ||
+            typeof data.numbers != "number" ||
+            data.numbers < 1 ||
+            data.numbers > 4
+        ) {
+            errorMsg = "Players number invalid. Cannont create room";
         } else {
-            let room = new Room(
-                data.name,
-                data.numbers,
-                SOCKET_LIST[socket.id],
-            );
-            SOCKET_LIST[socket.id].hosted = room.id;
-            ROOMS_LIST[room.id] = room;
+            let room = new Room(data.name, data.numbers, new User(data.pseudo));
+
+            addRoom(room);
             console.log("create_room", room);
             socket.emit("create_room_event", {room: room});
-            return room;
+            return;
         }
+
+        console.log("create_room", errorMsg);
+        socket.emit("create_room_event", {error: new Error(errorMsg)});
+        return;
     });
 
     socket.on("join_room", data => {
         if (
-            ROOMS_LIST[data.name] &&
-            ROOMS_LIST[data.name].players.length <
-                ROOMS_LIST[data.name].playersNumber &&
-            ROOMS_LIST[data.name].state === "waiting"
+            getRoom(data.name) &&
+            getRoom(data.name).players.length <
+                getRoom(data.name).playersNumber &&
+            getRoom(data.name).state === "waiting"
         ) {
             // room exists & has available slots & is joinable
-
             // Add user to room
-            ROOMS_LIST[data.name].players[socket.id] = SOCKET_LIST[socket.id];
+            getRoom(data.name).players.push(new User(data.pseudo));
 
             // If joining user fills the romm to desired number, switch room state
             if (
-                ROOMS_LIST[data.name].players.length ===
-                ROOMS_LIST[data.name].playersNumber
+                getRoom(data.name).players.length ===
+                getRoom(data.name).playersNumber
             ) {
-                ROOMS_LIST[data.name].state = "pending";
+                getRoom(data.name).state = "pending";
             }
 
             // Send room with new user added
-            console.log("join_room", ROOMS_LIST[data.name]);
-            socket.emit("join_room_event", {room: ROOMS_LIST[data.name]});
-            return ROOMS_LIST[data.name];
-        } else {
-            let message = `Room ${
-                data.name
-            } is full, a game in underway or room does not exists`;
-            console.error("join_room", message);
-            let error = new Error(message);
-            socket.emit("join_room_event", {error: error});
-            return error;
+            console.log("join_room", getRoom(data.name));
+            socket.emit("join_room_event", {
+                room: getRoom(data.name),
+            });
+            return;
         }
+
+        let message = `Room ${
+            data.name
+        } is full, a game in underway or room does not exists`;
+
+        console.error("join_room", message);
+        socket.emit("join_room_event", {error: new Error(message)});
+        return;
     });
 
     socket.on("get_room", data => {
-        if (ROOMS_LIST[data.name]) {
-            console.log("get_room", ROOMS_LIST[data.name]);
-            socket.emit("get_room_event", {room: ROOMS_LIST[data.name]});
-            return ROOMS_LIST[data.name];
-        } else {
-            let message = `No room with name ${data.name}`;
-            console.error("get_room", message);
-            let error = new Error(message);
-            socket.emit("get_room_event", {error: error});
-            return error;
+        if (getRoom(data.name)) {
+            console.log("get_room", getRoom(data.name));
+            socket.emit("get_room_event", {
+                room: getRoom(data.name),
+            });
+            return getRoom(data.name);
         }
+        let message = `No room with name ${data.name}`;
+
+        console.error("get_room", message);
+        const error = new Error(message);
+
+        socket.emit("get_room_event", {error: error});
+        return error;
     });
 
     socket.on("get_all_rooms", () => {
         if (ROOMS_LIST.length >= 0) {
-            console.log("get_all_rooms", ROOMS_LIST);
-            socket.emit("get_all_rooms_event", {rooms: ROOMS_LIST});
-            return ROOMS_LIST;
-        } else {
-            let message = `No room to display`;
-            console.error("get_all_rooms", message);
-            let error = new Error(message);
-            socket.emit("get_all_rooms_event", {error: error});
-            return error;
+            console.log("get_all_rooms_format", getRoomsForSelection());
+            socket.emit("get_all_rooms_event", {
+                rooms: getRoomsForSelection(),
+            });
+            return;
         }
+
+        let message = `No room to display`;
+
+        console.error("get_all_rooms", message);
+        socket.emit("get_all_rooms_event", {error: new Error(message)});
+        return;
     });
 };
 
-module.exports = {RoomsHandler};
+module.exports = {roomsHandler};
