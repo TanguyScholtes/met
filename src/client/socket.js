@@ -11,3 +11,13 @@ export const listen_createRoom = callback => {
         callback(data);
     });
 };
+
+export const ask_joinRoom = data => {
+    socket.emit("join_room", data);
+};
+
+export const listen_joinRoom = callback => {
+    socket.on("join_room_event", data => {
+        callback(data);
+    });
+};
