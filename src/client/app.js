@@ -50,7 +50,9 @@ export default function App() {
         return (
             <div className="main">
                 <Game
+                    setPlayer={setPlayer}
                     player={player}
+                    setRoom={setRoom}
                     room={room}
                 />
             </div>

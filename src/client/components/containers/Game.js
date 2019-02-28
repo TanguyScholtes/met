@@ -17,13 +17,28 @@ export default props => {
 
 
     const statusChange = feeling => {
-        /*
-        let currentUser = props.room.id;
+        socket.update_emoji( {
+            emoji: feeling,
+            room: props.room.id
+        } );
 
-        props.setPlayer( { status: feeling } );
-        //props.setRoom( { players: players } );
-        leaderboard = constructLeaderboard();
-        */
+        socket.emoji_updated( data => {
+            let currentRoom = props.room;
+            try {
+                currentRoom.players[ currentRoom.players.findIndex( x => {
+                    return x.pseudo === props.player.pseudo;
+                } ) ] = data.player;
+                console.log( currentRoom.players, props.player, data.player );
+            } catch ( error ) {
+                console.error( error );
+                return;
+            } finally {
+                props.setRoom( currentRoom );
+                console.log("roomr", props.room);
+                leaderboard = constructLeaderboard();
+            }
+            return;
+        } );
     };
 
 
@@ -39,22 +54,22 @@ export default props => {
                 </ol>
             </div>
             <div class="status-picker">
-                <button onClick={ statusChange( "http://www.zeldalegends.net/admin/style_emoticons/default/l;angry.gif" ) }>
+                <button onClick={ () => {statusChange( "http://www.zeldalegends.net/admin/style_emoticons/default/l;angry.gif" )} }>
                     <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;angry.gif" />
                 </button>
-                <button onClick={ statusChange( "http://www.zeldalegends.net/admin/style_emoticons/default/l;T_T.gif" ) }>
+                <button onClick={ () => {statusChange( "http://www.zeldalegends.net/admin/style_emoticons/default/l;T_T.gif" )} }>
                     <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;T_T.gif" />
                 </button>
-                <button onClick={ statusChange( "http://www.zeldalegends.net/admin/style_emoticons/default/l;dizzy.gif" ) }>
+                <button onClick={ () => {statusChange( "http://www.zeldalegends.net/admin/style_emoticons/default/l;dizzy.gif" )} }>
                     <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;dizzy.gif" />
                 </button>
-                <button onClick={ statusChange( "http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif" ) }>
+                <button onClick={ () => {statusChange( "http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif" )} }>
                     <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif" />
                 </button>
-                <button onClick={ statusChange( "http://www.zeldalegends.net/admin/style_emoticons/default/l;0_o.gif" ) }>
+                <button onClick={ () => {statusChange( "http://www.zeldalegends.net/admin/style_emoticons/default/l;0_o.gif" )} }>
                     <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;0_o.gif" />
                 </button>
-                <button onClick={ statusChange( "http://www.zeldalegends.net/admin/style_emoticons/default/l;sweat.gif" ) }>
+                <button onClick={ () => {statusChange( "http://www.zeldalegends.net/admin/style_emoticons/default/l;sweat.gif" )} }>
                     <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;sweat.gif" />
                 </button>
             </div>

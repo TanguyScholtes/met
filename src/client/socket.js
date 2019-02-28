@@ -19,3 +19,13 @@ export const ask_allRooms = () => {
 export const listen_allRooms = () => {
     return;
 };
+
+export const update_emoji = data => {
+    return socket.emit("update_emoji", data);
+};
+
+export const emoji_updated = callback => {
+    return socket.on( "update_emoji_event", data => {
+        callback( data );
+    } );
+};
