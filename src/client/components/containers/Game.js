@@ -19,7 +19,8 @@ export default props => {
     const statusChange = feeling => {
         socket.update_emoji( {
             emoji: feeling,
-            room: props.room.id
+            name: props.room.id,
+            pseudo: props.player.pseudo
         } );
 
         socket.emoji_updated( data => {

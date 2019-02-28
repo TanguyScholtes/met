@@ -26,6 +26,7 @@ export const update_emoji = data => {
 
 export const emoji_updated = callback => {
     return socket.on( "update_emoji_event", data => {
+        console.log( "sockets", data );
         callback( data );
     } );
 };
