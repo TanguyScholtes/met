@@ -2,6 +2,7 @@ import * as React from "react";
 import ReactDOM from "react-dom";
 import "./scss/style.scss";
 import Login from "./components/containers/Login";
+import Game from "./components/containers/Game";
 
 export default function App() {
     const [isGameOn, setGameOn] = React.useState(false);
@@ -21,9 +22,12 @@ export default function App() {
     } else {
         return (
             <div className="main">
-                <h1>
-                    Welcome {player} in {room} room
-                </h1>
+                <Game
+                    setPlayer={setPlayer}
+                    player={player}
+                    setRoom={setRoom}
+                    room={room}
+                />
             </div>
         );
     }
