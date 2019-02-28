@@ -34,9 +34,12 @@ export default props => {
         socket.ask_createRoom({
             name: e.target.room.value,
             numbers: parseInt(e.target.maxPlayers.value),
+            pseudo: e.target.pseudo.value,
         });
 
-        // socket.ask_joinRoom({name: e.target.room.value});
+        props.setRoom(e.target.room.value);
+        props.setPlayer(e.target.pseudo.value);
+        props.setGameOn(true);
     };
 
     const generateList = () => {
@@ -55,17 +58,6 @@ export default props => {
         }
 
         if (data.room) setList([...roomList, data.room.id]);
-    });
-
-    socket.listen_joinRoom(data => {
-        console.log(data);
-        if (!data.room) {
-            // TODO: can't join room
-            return;
-        }
-        props.setRoom(data.room);
-        props.setPlayer();
-        props.setGameOn(true);
     });
 
     // defining inputs to add in the form
