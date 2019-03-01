@@ -24,10 +24,6 @@ export default props => {
             name: e.target.room.value,
             pseudo: e.target.pseudo.value,
         });
-
-        // props.setRoom(e.target.room.value);
-        // props.setPlayer(e.target.pseudo.value);
-        // props.setGameOn(true);
     };
 
     const changeModeHandle = e => {
@@ -71,7 +67,7 @@ export default props => {
     socket.listen_joinRoom(data => {
         console.log(data);
         props.setRoom(data.room);
-        props.setPlayer(data.player);
+        props.setPlayer(data.room.players[data.room.players.length - 1]);
         props.setGameOn(true);
     });
 
