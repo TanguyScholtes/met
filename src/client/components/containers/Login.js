@@ -65,7 +65,6 @@ export default props => {
     });
 
     socket.listen_joinRoom(data => {
-        console.log(data);
         props.setRoom(data.room);
         props.setPlayer(data.room.players[data.room.players.length - 1]);
         props.setGameOn(true);
