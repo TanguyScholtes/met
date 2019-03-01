@@ -38,6 +38,9 @@ const roomsHandler = socket => {
             addRoom(room);
             console.log("create_room", room);
             socket.emit("create_room_event", {room: room});
+            socket.emit("join_room_event", {
+                room: getRoom(data.name),
+            });
             return;
         }
 

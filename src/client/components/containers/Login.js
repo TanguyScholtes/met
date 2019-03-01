@@ -1,22 +1,22 @@
 import React from "react";
 import Form from "../dummies/Form";
 import * as socket from "../../socket";
-import axios from "axios";
+// import axios from "axios";
 
 export default props => {
     const [joinRoom, setJoin] = React.useState(true);
     const [roomList, setList] = React.useState(undefined);
 
-    if (!roomList) {
-        axios
-            .get("/rooms")
-            .then(res => {
-                setList(res.data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
+    // if (!roomList) {
+    //     axios
+    //         .get("/rooms")
+    //         .then(res => {
+    //             setList(res.data);
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
+    // }
 
     const joinRoomHandle = e => {
         e.preventDefault();
@@ -25,9 +25,9 @@ export default props => {
             pseudo: e.target.pseudo.value,
         });
 
-        props.setRoom(e.target.room.value);
-        props.setPlayer(e.target.pseudo.value);
-        props.setGameOn(true);
+        // props.setRoom(e.target.room.value);
+        // props.setPlayer(e.target.pseudo.value);
+        // props.setGameOn(true);
     };
 
     const changeModeHandle = e => {
@@ -43,10 +43,6 @@ export default props => {
             numbers: parseInt(e.target.maxPlayers.value),
             pseudo: e.target.pseudo.value,
         });
-
-        props.setRoom(e.target.room.value);
-        props.setPlayer(e.target.pseudo.value);
-        props.setGameOn(true);
     };
 
     const generateList = () => {
@@ -70,6 +66,13 @@ export default props => {
         if (data.room) {
             setList([...roomList, data.room.id]);
         }
+    });
+
+    socket.listen_joinRoom(data => {
+        console.log(data);
+        props.setRoom(data.room);
+        props.setPlayer(data.player);
+        props.setGameOn(true);
     });
 
     // defining inputs to add in the form
