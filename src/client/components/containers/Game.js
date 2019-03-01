@@ -1,10 +1,9 @@
 import * as React from "react";
 import * as socket from "../../socket";
+import emotes from "../../data/emotes.json";
 
 export default props => {
-    const [status, setStatus] = React.useState(
-        "http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif",
-    );
+    const [status, setStatus] = React.useState(emotes.happy);
 
     const constructLeaderboard = () => {
         const board = props.room.players;
@@ -53,51 +52,39 @@ export default props => {
             <div className="status-picker">
                 <button
                     onClick={() => {
-                        statusChange(
-                            "http://www.zeldalegends.net/admin/style_emoticons/default/l;angry.gif",
-                        );
+                        statusChange(emotes.hangry);
                     }}>
-                    <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;angry.gif" />
+                    <img src={emotes.hangry} />
                 </button>
                 <button
                     onClick={() => {
-                        statusChange(
-                            "http://www.zeldalegends.net/admin/style_emoticons/default/l;T_T.gif",
-                        );
+                        statusChange(emotes.sad);
                     }}>
-                    <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;T_T.gif" />
+                    <img src={emotes.sad} />
                 </button>
                 <button
                     onClick={() => {
-                        statusChange(
-                            "http://www.zeldalegends.net/admin/style_emoticons/default/l;dizzy.gif",
-                        );
+                        statusChange(emotes.dizzy);
                     }}>
-                    <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;dizzy.gif" />
+                    <img src={emotes.dizzy} />
                 </button>
                 <button
                     onClick={() => {
-                        statusChange(
-                            "http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif",
-                        );
+                        statusChange(emotes.happy);
                     }}>
-                    <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;happy.gif" />
+                    <img src={emotes.happy} />
                 </button>
                 <button
                     onClick={() => {
-                        statusChange(
-                            "http://www.zeldalegends.net/admin/style_emoticons/default/l;0_o.gif",
-                        );
+                        statusChange(emotes.chocked);
                     }}>
-                    <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;0_o.gif" />
+                    <img src={emotes.chocked} />
                 </button>
                 <button
                     onClick={() => {
-                        statusChange(
-                            "http://www.zeldalegends.net/admin/style_emoticons/default/l;sweat.gif",
-                        );
+                        statusChange(emotes.sweat);
                     }}>
-                    <img src="http://www.zeldalegends.net/admin/style_emoticons/default/l;sweat.gif" />
+                    <img src={emotes.sweat} />
                 </button>
             </div>
         </div>
