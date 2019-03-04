@@ -1,24 +1,27 @@
 import React from "react";
 import Form from "../dummies/Form";
 import * as socket from "../../socket";
-// import axios from "axios";
+import axios from "axios";
 
 export default props => {
     const [joinRoom, setJoin] = React.useState(true);
-    const [roomList, setList] = React.useState(undefined);
+    const [roomList, setList] = React.useState([]);
 
-    // if (!roomList) {
-    //     axios
-    //         .get("/rooms")
-    //         .then(res => {
-    //             setList(res.data);
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         });
-    // }
+    React.useEffect(() => {
+        if (roomList === []) {
+            axios
+                .get("/rooms")
+                .then(res => {
+                    setList(res.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }, [roomList]);
 
     const joinRoomHandle = e => {
+        console.log(e.target);
         e.preventDefault();
         socket.ask_joinRoom({
             name: e.target.room.value,
@@ -48,7 +51,7 @@ export default props => {
         const list = [];
 
         roomList.forEach(elem => {
-            list.push(<li>{elem}</li>);
+            list.push(<li key={elem.id}>{elem}</li>);
         });
         return list;
     };
@@ -65,6 +68,7 @@ export default props => {
     });
 
     socket.listen_joinRoom(data => {
+        console.log(data);
         props.setRoom(data.room);
         props.setPlayer(data.room.players[data.room.players.length - 1]);
         props.setGameOn(true);

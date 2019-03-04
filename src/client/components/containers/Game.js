@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as socket from "../../socket";
 import emotes from "../../data/emotes.json";
+import LeaderBoard from "../dummies/LeaderBoard";
 
 export default props => {
     const [status, setStatus] = React.useState(emotes.happy);
@@ -21,9 +22,8 @@ export default props => {
 
         leaderboard.forEach(item => {
             list.push(
-                <li key="1">
-                    <img src={status} />
-                    {item.pseudo} {item.score}
+                <li key={item.pseudo}>
+                    <img src={status} /> {` - ${item.pseudo}`} {item.score}
                 </li>,
             );
         });
@@ -45,10 +45,10 @@ export default props => {
     return (
         <div>
             <h1>{"met</lide>"}</h1>
-            <div className="leaderboard">
-                <h2>{`Room : ${props.room.id}`}</h2>
-                <ol>{generateLaederboard()}</ol>
-            </div>
+            <LeaderBoard
+                generateLaederboard={generateLaederboard}
+                room={props.room}
+            />
             <div className="status-picker">
                 <button
                     onClick={() => {

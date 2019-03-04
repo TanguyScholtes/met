@@ -81,7 +81,7 @@ const roomsHandler = socket => {
         } is full, a game in underway or room does not exists`;
 
         console.error("join_room", message);
-        socket.emit("join_room_event", {error: new Error(message)});
+        socket.emit("join_room_event", {error: message});
         return;
     });
 
